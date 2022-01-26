@@ -1,5 +1,6 @@
 module main
 
+import common
 import os
 
 const (
@@ -7,9 +8,18 @@ const (
 	app_description = 'create new empty directories'
 )
 
+struct Settings {
+	parent_dir bool
+	mode       string
+	verbose    bool
+	filepaths  []string
+}
+
 fn main() {
-	println(folder_exists('./test/test2/test3'))
-	os.mkdir('./test') or { eprintln('Directory ‘test’ already exists.') }
+	print(args())
+
+	// println(folder_exists('./test/test3'))
+	// os.mkdir_all('./test ./test2') or { eprintln('Directory ‘test’ already exists.') }
 }
 
 fn folder_exists(folder string) bool {
@@ -26,4 +36,17 @@ fn folder_exists(folder string) bool {
 	}
 
 	return folder_name in contents
+}
+
+fn args() Settings {
+	mut fp := common.flag_parser(os.args)
+	fp.application(app_name)
+	fp.description(app_description)
+
+	mode := fp.string('mode', `m`, '', 'set file mode')
+	parent_dir := fp.bool('parents', `p`, false, 'create parent directories')
+	verbose := fp.bool('verbose', `v`, false, 'print to stdout a message for each created directory')
+	filepaths := fp.finalize() or { return Settings{} }
+
+	return Settings{parent_dir, mode, verbose, filepaths}
 }
