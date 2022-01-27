@@ -31,7 +31,11 @@ fn folder_exists(folder string) bool {
 
 	path = path[0..path.len - 1] // Omit folder from path
 
-	path_string := path.join('/')
+	mut path_string := path.join('/')
+
+	if path_string == '' {
+		path_string = '.'
+	}
 
 	contents := os.ls(path_string) or {
 		eprintln('Directory ‘$path_string does not exist.’')
