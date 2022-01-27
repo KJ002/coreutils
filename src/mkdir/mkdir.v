@@ -18,9 +18,13 @@ struct Settings {
 fn main() {
 	settings := args()
 
-	for paths in settings.filepaths {
-		if !folder_exists(paths) {
-			os.mkdir_all(paths) or { eprintln('Directory ‘test’ already exists.') }
+	for path in settings.filepaths {
+		if !folder_exists(path) {
+			os.mkdir_all(path) or { eprintln('Directory ‘test’ already exists.') }
+
+			if settings.verbose {
+				println('Created directory $path')
+			}
 		}
 	}
 }
