@@ -16,10 +16,13 @@ struct Settings {
 }
 
 fn main() {
-	print(args())
+	settings := args()
 
-	// println(folder_exists('./test/test3'))
-	// os.mkdir_all('./test ./test2') or { eprintln('Directory ‘test’ already exists.') }
+	for paths in settings.filepaths {
+		if !folder_exists(paths) {
+			os.mkdir_all(paths) or { eprintln('Directory ‘test’ already exists.') }
+		}
+	}
 }
 
 fn folder_exists(folder string) bool {
